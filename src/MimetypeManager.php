@@ -32,9 +32,14 @@ readonly class MimetypeManager
     {
         if ($file->mimetype === null) {
             $path = $this->temporaryFiles->create($file->content);
-            $file->mimetype = finfo_file($this->scanner, $path);
+            $file->mimetype = $this->forFilePath($path);
         }
 
         return $file->mimetype;
+    }
+
+    public function forFilePath(string $path): string
+    {
+        return finfo_file($this->scanner, $path);
     }
 }
