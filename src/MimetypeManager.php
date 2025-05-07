@@ -16,16 +16,31 @@ readonly class MimetypeManager
         private TemporaryFiles $temporaryFiles,
     )
     {
-        if (false === $scanner = finfo_open(FILEINFO_MIME_TYPE)) {
-            throw new \Exception('failed to open a file info scanner');
-        }
-
-        $this->scanner = $scanner;
+        $this->initializeScanner();
     }
 
     public function __destruct()
     {
         finfo_close($this->scanner);
+    }
+
+    public function __serialize(): array
+    {
+        return [];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->initializeScanner();
+    }
+
+    private function initializeScanner(): void
+    {
+        if (false === $scanner = finfo_open(FILEINFO_MIME_TYPE)) {
+            throw new \Exception('failed to open a file info scanner');
+        }
+
+        $this->scanner = $scanner;
     }
 
     public function get(File $file): string
