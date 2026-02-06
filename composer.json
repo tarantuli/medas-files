@@ -1,31 +1,30 @@
 {
-    "name": "morphp/medas-files",
-    "description": "Medas files",
-    "keywords": [
-        "data manipulation"
-    ],
-    "authors": [
-        {
-            "name": "Patrick Morpey",
-            "email": "patrick@morphp.nl"
-        }
-    ],
-    "type": "library",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "morphp/medas-core": "dev-dev",
-        "morphp/medas-file-system": "dev-dev",
-        "ext-fileinfo": "*"
-    },
-    "require-dev": {
-        "morphp/medas-service-manager": "dev-dev",
-        "phpunit/phpunit": "^9.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "Medas\\Files\\": "src/",
-            "Medas\\FilesTest\\": "tests/"
-        }
+  "name": "morphp/medas-files",
+  "description": "Medas files",
+  "version": "2.0.0",
+  "keywords": [
+    "data manipulation"
+  ],
+  "authors": [
+    {
+      "name": "Patrick Morpey",
+      "email": "patrick@morphp.nl"
     }
+  ],
+  "type": "library",
+  "require": {
+    "morphp/medas-core": "^2",
+    "morphp/medas-file-system": "^2",
+    "ext-fileinfo": "*"
+  },
+  "require-dev": {
+    "morphp/medas-service-manager": "^2",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Medas\\Files\\": "src/",
+      "Medas\\FilesTest\\": "tests/"
+    }
+  }
 }
