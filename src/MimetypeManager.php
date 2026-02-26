@@ -32,7 +32,7 @@ readonly class MimetypeManager
     private function initializeScanner(): void
     {
         if (false === $scanner = finfo_open(FILEINFO_MIME_TYPE)) {
-            throw new \RuntimeException('Failed to open a file info scanner.');
+            throw new Exceptions\FailedToOpenFileInfoScanner();
         }
 
         $this->scanner = $scanner;
