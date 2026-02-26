@@ -19,11 +19,6 @@ readonly class MimetypeManager
         $this->initializeScanner();
     }
 
-    public function __destruct()
-    {
-        finfo_close($this->scanner);
-    }
-
     public function __serialize(): array
     {
         return [];
@@ -37,12 +32,15 @@ readonly class MimetypeManager
     private function initializeScanner(): void
     {
         if (false === $scanner = finfo_open(FILEINFO_MIME_TYPE)) {
-            throw new \Exception('failed to open a file info scanner');
+            throw new \RuntimeException('Failed to open a file info scanner.');
         }
 
         $this->scanner = $scanner;
     }
 
+    /**
+     * Sets the mimetype on the $file object itself and then returns it.
+     */
     public function get(File $file): string
     {
         if ($file->mimetype === null) {
@@ -55,6 +53,12 @@ readonly class MimetypeManager
 
     public function forFilePath(string $path): string
     {
-        return finfo_file($this->scanner, $path);
+        $result = finfo_file($this->scanner, $path);
+
+        if ($result === false) {
+            throw new Exceptions\FailedToDetectMimeType($path);
+        }
+
+        return $result;
     }
 }

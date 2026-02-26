@@ -1,6 +1,6 @@
 {
   "name": "morphp/medas-files",
-  "description": "Medas files",
+  "description": "File content hashing and MIME type detection for the Medas framework",
   "keywords": [
     "data manipulation"
   ],
