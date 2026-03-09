@@ -9,15 +9,18 @@ use Medas\Core\{Attributes\Service, File};
 #[Service]
 readonly class ContentHashManager
 {
-    /**
-     * Sets the content hash on the $file object itself and then returns it.
-     */
+    public function __construct(
+        private \WeakMap $hashes = new \WeakMap(),
+    )
+    {
+    }
+
     public function get(File $file): string
     {
-        if ($file->contentHash === null) {
-            $file->contentHash = sha1($file->content);
+        if (!$this->hashes->offsetExists($file)) {
+            $this->hashes->offsetSet($file, sha1($file->content));
         }
 
-        return $file->contentHash;
+        return $this->hashes->offsetGet($file);
     }
 }

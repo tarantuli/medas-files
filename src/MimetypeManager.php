@@ -14,6 +14,7 @@ readonly class MimetypeManager
 
     public function __construct(
         private TemporaryFiles $temporaryFiles,
+        private \WeakMap $hashes = new \WeakMap(),
     )
     {
         $this->initializeScanner();
@@ -38,17 +39,14 @@ readonly class MimetypeManager
         $this->scanner = $scanner;
     }
 
-    /**
-     * Sets the mimetype on the $file object itself and then returns it.
-     */
     public function get(File $file): string
     {
-        if ($file->mimetype === null) {
+        if (!$this->hashes->offsetExists($file)) {
             $path = $this->temporaryFiles->create($file->content);
-            $file->mimetype = $this->forFilePath($path);
+            $this->hashes->offsetSet($file, $this->forFilePath($path));
         }
 
-        return $file->mimetype;
+        return $this->hashes->offsetGet($file);
     }
 
     public function forFilePath(string $path): string
