@@ -14,7 +14,7 @@ readonly class MimetypeManager
 
     public function __construct(
         private TemporaryFiles $temporaryFiles,
-        private \WeakMap $hashes = new \WeakMap(),
+        private \WeakMap       $hashes = new \WeakMap(),
     )
     {
         $this->initializeScanner();
@@ -22,11 +22,16 @@ readonly class MimetypeManager
 
     public function __serialize(): array
     {
-        return [];
+        return [
+            'temporaryFiles' => $this->temporaryFiles,
+        ];
     }
 
     public function __unserialize(array $data): void
     {
+        $this->temporaryFiles = $data['temporaryFiles'];
+        $this->hashes = new \WeakMap();
+
         $this->initializeScanner();
     }
 
@@ -43,6 +48,7 @@ readonly class MimetypeManager
     {
         if (!$this->hashes->offsetExists($file)) {
             $path = $this->temporaryFiles->create($file->content);
+
             $this->hashes->offsetSet($file, $this->forFilePath($path));
         }
 
